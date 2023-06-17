@@ -57,7 +57,7 @@ const addTodoElement = (content) => {
 
   todolist.push({ id: todolist.length, todo: content, isComplete: false });
 
-  newTodo.innerHTML = content;
+  // newTodo.innerHTML = content;
   renderTodofromArray(todolist);
 };
 
@@ -68,15 +68,14 @@ const renderTodofromArray = (array) => {
    */
 
   // TODO : 배열 내의 객체일 때, 그냥 배열에 문자열이 있을 때 검증해야함
+  // let newTodo = document.createElement("li");
+  let mainTodo = document.getElementById("main-todo-ul");
 
-  const newTodo = document.createElement("li");
-  const mainTodo = document.getElementById("main-todo-ul");
-
-  for (let ele of array) {
-    // 객체가 있을 때
+  array.forEach((ele)=>{
+    let newTodo = document.createElement("li");
     newTodo.innerHTML = ele.todo;
     mainTodo.appendChild(newTodo);
-  }
+  })
 };
 
 const refrechTodoList = () => {
@@ -95,6 +94,7 @@ addButton.addEventListener("click", () => {
   text.value = ""; // 입력 이후에 input 태그를 비움
   text.focus(); // input 태그를 비우고 커서를 입력 칸으로 옮긴다.
 });
-ㅌ
+
 // ! 최초 실행부
+console.log(`todolist ${todolist}`)
 renderTodofromArray(todolist);
