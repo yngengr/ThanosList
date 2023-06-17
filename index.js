@@ -87,9 +87,15 @@ const renderTodofromArray = (array) => {
    * @param {Array} content 배열이 들어옴
    */
 
+
   // TODO : 배열 내의 객체일 때, 그냥 배열에 문자열이 있을 때 검증해야함
   // let newTodo = document.createElement("li");
   let mainTodo = document.getElementById("main-todo-ul");
+
+  // TODO: 모든 리스트 비우기
+  // while (mainTodo.firstChild) {
+  //   main.removeChild(mainTodo.firstChild);
+  // }
 
   array.forEach((ele) => {
     let newTodo = document.createElement("li");
@@ -117,4 +123,4 @@ addButton.addEventListener("click", () => {
 
 // ! 최초 실행부
 console.log(`todolist ${todolist}`);
-renderTodofromArray(todolist);
+renderTodofromArray(todolist);               m
