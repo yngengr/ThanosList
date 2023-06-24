@@ -1,126 +1,140 @@
-// TODO : 타노스 형태의 삭제가 일어났을 때는 전체 배열을 읽고 삭제한 이후에
-// TODO : 전체 배열을 받아서 삭제를 수행하고, 새로운 배열을 리턴해야함.
-// TODO : 해당 TODOLIST는 콘솔로 임의로 변경하면 안되기 때문에 Object.seal or Object.freeze로 수정을 못하게 하고 복제해서 새로 리턴
+// DOM Selector
+let inputEle = document.querySelector(".input");
+let form = document.querySelector(".form");
+// let submitEle = document.querySelector(".add");
+let tasksDiv = document.querySelector(".tasks");
+let containerDiv = document.querySelector(".container");
+let deleteAll = document.querySelector(".delete-all");
+let thanosSnap = document.querySelector(".snap-effect");
 
-const people = [
-  { name: "정훈", money: 500000 },
-  { name: "우원", money: 400000 },
-  { name: "성준", money: 300000 },
-  { name: "수경", money: 100000 },
-  { name: "선혁", money: 600000 },
-];
+let arrayOfTasks = [];
 
-/** 1번 문제: filter를 이용하여 500,000원 이상 돈을 가진 객체를 배열로 담기 */
-let rich = people.filter((person) => person.money >= 500_000);
-
-console.log("1. Rich People >>", rich); // [{name: '정훈', money: 500000}, {name: '선혁', money: 600000}]
-
-/** 2번 문제: reduce를 이용하여 500,000원 이상 돈을 가진 모든 "사람"의 이름만 요소로 배열에 담기 */
-let richNames = people
-  .filter((person) => person.money >= 500_000)
-  .map((person) => person.name);
-
-console.log(`2. Rich Names >> ${richNames}`);
-
-/** 3번 문제: reduce를 이용하여 최소값, 최대값 구하기 */
-const numbers = [1, 2, 3, 4, 5];
-
-let max = numbers.reduce((acc, ele) => (acc > ele ? acc : ele));
-let min = numbers.reduce((acc, ele) => (acc < ele ? acc : ele));
-console.log(`3. 배열 내의 최대값 >> ${max}, 최소값 ${min}`);
-
-/** 4번 문제 richNames reduce로 구현하기 */
-let richNames2 = people.reduce((acc, person, idx) => {
-  // console.log(`acc > ${acc}
-  // , person.name > ${person.name}
-  // , person.money > ${person.money}
-  // , person >> ${person}`);
-  // if (idx === people.length) {
-  //   return
-  // }
-
-  if (person.money >= 500000) {
-    return (acc += person.name + ",");
-  } else {
-    return acc;
+thanosSnap.onclick = function () {
+  for (let ele of arrayOfTasks) {
+    console.log("현재 >> ", ele.todo, ele.isComplete);
   }
-  // (person.money >= 500000 ? acc += person.name : acc += "");
-}, "");
+  alert("짝수번째가 사라집니다.");
+  arrayOfTasks = arrayOfTasks.filter((ele, idx) => idx % 2 == 0);
+  renderFromArray(arrayOfTasks);
+};
 
-console.log(`4. reduce를 활용 >> ${richNames2.slice(0, -1)}`);
 
-/** To-do list 관련 함수 */
-const addButton = document.getElementById("add-button");
 const a_todo = {
   id: 1,
-  todo: "(1) 객체 투두",
+  todo: "첫 투두",
   isComplete: false,
 };
 
 const b_todo = {
   id: 2,
-  todo: "(2) 객체 투두",
+  todo: "둘 투두",
   isComplete: false,
 };
 
-const todolist = [a_todo, b_todo];
+// Add Task button
 
-const addTodoElement = (content) => {
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  // onClick for IE compatible
+  // if you want to ignore, use addEventListener()
+  if (inputEle.value !== "") {
+    // 입력 값이 빈 값이 아닐 때
+
+    addTodoElement(inputEle.value);
+    inputEle.value = "";
+    // 배열에 값을 넣는 함수를 호출하고, 입력값을 비도록 초기화
+  }
+});
+
+tasksDiv.addEventListener("click", function (e) {
+  if (e.target.classList.contains("del")) {
+    // 해당 HTML요소의 class가 del을 포함할 때
+    e.target.parentElement.remove();
+    // parentElement -> 부모 element를 반환.
+    // 그 내의 remove 메서드 수행 해당 타겟의 부모의 요소 자체를 삭제 (여기서는 div class="task")
+
+    for (let ele of arrayOfTasks) {
+      console.log("삭제하기 전 >> ", ele.todo);
+    }
+
+    deleteTodoElement(e.target.parentElement.getAttribute("data-id"));
+  }
+
+  if (e.target.classList.contains("task")) {
+    // 해당 HTML요소의 class가 tasks를 포함할 때
+    // 완료로 처리
+    e.target.classList.toggle("done"); //classList.toggle -> 해당 클래스명을 done으로 바꿈
+    changeToComplete(e.target.getAttribute("data-id"));
+  }
+});
+
+function changeToComplete(dataID) {
+  arrayOfTasks.forEach((todo) => {
+    if (todo.id == Number(dataID)) {
+      // 해당 todo의 id가 dom에서 가져온 data-id의 숫자형태와 같은 경우에는 아래를 수행
+      todo.isComplete == false
+        ? (todo.isComplete = true)
+        : (todo.isComplete = false);
+    }
+  });
+}
+
+function addTodoElement(todoText) {
   /**
    * set content you set into li.innerHTML (list Text) and render it
    * @param {string} content 추가하고 싶은 투두 내용(render)
    * @summary Add a todo into list
+   * todoform = {
+   *  id: number,
+   *  todo: string,
+   *  isComplete: bool,
+   * }
    */
 
-  const newTodo = document.createElement("li");
-  const mainTodo = document.getElementById("main-todo-ul");
+  const todoObject = {
+    id: Date.now(), // 현재 시간(THE UNIX TIME)
+    todo: todoText,
+    isComplete: false,
+  };
+  arrayOfTasks.push(todoObject); // 할 일 배열 끝에 넣는다.
+  renderFromArray(arrayOfTasks); // 배열로부터 읽어와서 그린다.
+}
 
-  todolist.push({ id: todolist.length, todo: content, isComplete: false });
+function deleteTodoElement(dataID) {
+  // 여기서 task는 data-id안에 있는 숫자로, 넘어올 때는 문자열로 넘어온다.
 
-  // newTodo.innerHTML = content;
-  renderTodofromArray(todolist);
-};
+  // 객체 안의 id와 class안의 id가 같지 않은 모든 요소를 리턴
+  arrayOfTasks = arrayOfTasks.filter(
+    (todoFromArray) => todoFromArray.id !== Number(dataID)
+  );
+  console.log("array 지운 후는 >>", arrayOfTasks);
+}
 
-const renderTodofromArray = (array) => {
+function renderFromArray(array) {
   /**
    * 배열을 입력 받아 배열 내의 입력값을 li HTML 요소로 추가
    * @param {Array} content 배열이 들어옴
    */
+  tasksDiv.innerHTML = ""; // 전체 할 일 목록이 지워진다.
 
+  array.forEach((todoFromArray) => {
+    let div = document.createElement("div");
+    div.className = "task";
 
-  // TODO : 배열 내의 객체일 때, 그냥 배열에 문자열이 있을 때 검증해야함
-  // let newTodo = document.createElement("li");
-  let mainTodo = document.getElementById("main-todo-ul");
+    if (todoFromArray.isComplete) {
+      // 가져온 객체의 isComplete가 true인 경우에는 클래스명을 변경
+      div.className = "task done";
+    }
 
-  // TODO: 모든 리스트 비우기
-  // while (mainTodo.firstChild) {
-  //   main.removeChild(mainTodo.firstChild);
-  // }
+    // 생성한 div에 'data-id' 값을 세팅
+    div.setAttribute("data-id", todoFromArray.id);
+    div.appendChild(document.createTextNode(todoFromArray.todo));
 
-  array.forEach((ele) => {
-    let newTodo = document.createElement("li");
-    newTodo.innerHTML = ele.todo;
-    mainTodo.appendChild(newTodo);
+    // delete 버튼 생성
+    let span = document.createElement("span");
+    span.className = "del";
+    span.appendChild(document.createTextNode("Delete")); // Delete라는 글자값 세팅
+    div.appendChild(span);
+    tasksDiv.appendChild(div);
   });
-};
-
-const refrechTodoList = () => {
-  /**
-   * 두 개의 배열을 받아서 모든 id의 값을 1부터로 세팅해주고 새로 배열을 리턴함
-   * 임의로 삭제한 리스트를 새로운 id로 갈아끼워서 사용하기 위함
-   * @param {Array, Array} content 바뀌기 전, 바뀐 이후 배열
-   */
-  return;
-};
-
-addButton.addEventListener("click", () => {
-  const text = document.getElementById("text");
-  // 왜 input tag의 내부 값은 innerHTML이 아니라 value인 것인가..
-  addTodoElement(text.value);
-  text.value = ""; // 입력 이후에 input 태그를 비움
-  text.focus(); // input 태그를 비우고 커서를 입력 칸으로 옮긴다.
-});
-
-// ! 최초 실행부
-console.log(`todolist ${todolist}`);
-renderTodofromArray(todolist);               m
+}

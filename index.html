@@ -1,104 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <meta property="og:title" content="타노스 리스트 - 절반을 없애라!">
-    <meta property="og:description" content="추가한 목록을 랜덤으로 절반씩 없애봐요">
-    <meta property="og:type" content="article">
-    <meta property="og:url" content="https://yngnier.github.io/ThanosList">
-    <meta property="og:image" content="https://yngnier.github.io/ThanosList/public/og-image.jpg">
-    <meta property="og:image:type" content="image/png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta name="twitter:site" content="타노스 리스트 - 절반을 없애라!">
-    <meta name="twitter:title" content="타노스 리스트 - 절반을 없애라!">
-    <meta name="twitter:description" content="추가한 목록을 랜덤으로 절반씩 없애봐요">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image:src" content="https://yngnier.github.io/ThanosList/public/og-image.jpg">
-    <meta name="theme-color" content="#FD0054">
-    <title>Thanos list</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-        }
-
-        .todo-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 80%;
-            max-width: 400px;
-            margin-bottom: 60vh;
-        }
-
-        .todo-title {
-            color: black;
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-
-        .todo-list {
-            display: flex;
-            align-items: center;
-            width: 100%;
-            border-radius: 25px;
-            padding: 3px;
-            background-color: white;
-            overflow: hidden;
-            margin: 1px;
-            border: 2px solid #000;
-        }
-
-        .todo-input {
-            flex: 1;
-            padding: 8px;
-            border: none;
-            border-radius: 25px 0 0 25px;
-            font-size: 16px;
-            color: black;
-            background-color: transparent;
-            text-align: center;
-        }
-
-        .todo-button {
-            border: none;
-            padding: 10px 20px;
-            border-radius: 0 25px 25px 0;
-            background-color: #4caf50;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .todolist-container ul {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="타노스 리스트 - 절반을 없애라!" />
+    <meta property="og:description" content="추가한 목록을 랜덤으로 절반씩 없애봐요" />
+    <meta property="og:image" content="./public/og-image.jpg" />
+    <meta name='twitter:description' content='타노스 리스트 - 절반을 없애라!' />
+    <meta name='twitter:image' content="./public/og-image.jpg" />
+    <meta name='twitter:image:alt' content='타노스 리스트' />
+    <link rel="shortcut icon" href="./favicon.png" type="image/png">
+    <link rel="icon" href="./favicon.png" type="image/png">
+    <title>Thanos List | Remove half of the list!</title>
+    <link rel="stylesheet" type="text/css" href="./styles2.css">
 </head>
 
 <body>
-    <div class="todo-container">
-        <h1 class="todo-title">What are today's tasks?</h1>
-        <div class="todo-list">
-            <input type="text" class="todo-input" placeholder="Todos" id="text" />
-            <button class="todo-button" id="add-button">Add</button>
-            <button class="todo-button" id="localStorage-button">LS</button>
+    <h1>What's your Tasks?</h1>
+    <div class="container">
+        <form class="form" action="" method="get">
+            <input type="text" class="input" />
+            <input type="submit" class="add" value="Add Task" />
+        </form>
+        <div class="tasks">
+            <!-- <div class="task">"hello"
+                <span class="del">Delete</span>
+            </div>
+            <div class="task">"hello2"
+                <span class="del">Delete</span>
+            </div> -->
+            <!-- <div class="task">"hello"
+                <span class="amend">amend</span>
+            </div> -->
         </div>
-        <br />
-        <div class="todo-list">
-            <ul id="main-todo-ul">
-                <!-- <li></li> -->
-            </ul>
-        </div>
+        <div class="snap-effect">Thanos's Snap Effect</div>
     </div>
-
+    <div class="infinity-gauntlet"></div>
     <script defer src="./index.js"></script>
 </body>
 
