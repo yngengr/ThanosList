@@ -1,4 +1,6 @@
 이 프로젝트 주소
+https://yngnier.github.io/ThanosList/
+
 [프로젝트 구경가기](https://yngnier.github.io/ThanosList/)
 
 # 타노스 리스트
